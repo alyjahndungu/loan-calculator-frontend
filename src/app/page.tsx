@@ -1,6 +1,14 @@
-import Image from "next/image";
+"use client";
 
+import { useEffect, useState } from "react";
+
+import { LoanForm } from "@/components/hooks/loan-form"
+import {Results} from "@/components/hooks/results"
 export default function Home() {
+
+  const [result, setResult] = useState(false);
+  const [monthlyPayment, setMonthlyPayment] = useState("");
+  const [totalRepayment, setTotalRepayment] = useState("");
   return (
 
 <div >
@@ -10,10 +18,21 @@ export default function Home() {
   <div className="w-md p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <h3 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">RESILIENT LOAN CALCULATOR</h3>
 
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <LoanForm />
 
-        <label for="default-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Default range</label>
-<input id="default-range" type="range" value="50" className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" />
+        <div className="bg-secondary-900 lg:rounded-bl-[80px]">
+          {result ? (
+            <Results
+              monthlyPayment={'1000'}
+              totalRepayment={'2000'}
+            />
+          ) : (
+            <NoResults />
+          )}
+        </div>
 
+        </div>
 
 
     <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">Go to this step by step guideline process on how to certify for your weekly benefits:</p>
