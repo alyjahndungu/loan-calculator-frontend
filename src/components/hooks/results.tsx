@@ -5,29 +5,16 @@ type ResultsProps = {
   
   export function Results({ monthlyPayment, totalRepayment }: ResultsProps) {
     return (
-      <div className="flex flex-col lg:h-full lg:justify-center">
-        <h2 className="text-preset-2 font-bold text-white mb-200">
-          Your results
-        </h2>
-        <p className="text-preset-4 text-secondary-300 mb-300">
-          Your results are shown below based on the information you provided. To
-          adjust the results, edit the form and click “calculate repayments”
-          again.
-        </p>
-        <div className="p-300 bg-black/25 text-left border-t-4 border-primary rounded-lg">
-          <p className="text-preset-4 text-secondary-300">
-            Your monthly repayments
-          </p>
-          <p className="text-preset-1 text-primary font-bold">{monthlyPayment}</p>
-          <hr className="h-px bg-divider border-0 my-200" />
-          <p className="text-preset-4 text-secondary-300">
-            Total you&apos;ll repay over the term
-          </p>
-          <p className="text-preset-2 text-white font-bold mt-2">
-            {totalRepayment}
-          </p>
-        </div>
-      </div>
+
+<div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <p className="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white">Monthly Payments</p>  
+        <p className="mb-2 text-sm font-bold tracking-tight text-blue-900 dark:text-white">KES. {monthlyPayment}</p>
+
+        <h5 className="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white">Total Repayments</h5>  
+        <p className="mb-2 text-sm font-bold tracking-tight text-blue-900 dark:text-white">KES. {totalRepayment}</p>
+</div>
+
+    
     );
   }
   export default Results;
