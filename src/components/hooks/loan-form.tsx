@@ -18,10 +18,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from 'zod';
+import { log } from "console"
 
 interface LoanFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 const formSchema = z.object({
-    amount: z.number({ message: 'Enter a valid loan' }),
+    originatedAmount: z.number({ message: 'Enter a valid loan' }),
     interestRate: z.number({ message: 'Interest Rate is required' }),
     loanTenure: z.number({ message: 'Loan duration is required' }),
 
@@ -29,18 +30,24 @@ const formSchema = z.object({
 
 
 
-type UserFormValue = z.infer<typeof formSchema>;
+
+type LoanFormValue = z.infer<typeof formSchema>;
 
 export function LoanForm({ className, ...props }: LoanFormProps) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
     const [loading, setLoading] = useState(false);
 
-    const form = useForm<UserFormValue>({
-        resolver: zodResolver(formSchema)
+    const form = useForm<LoanFormValue>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            originatedAmount: 0,
+            interestRate: 0,
+            loanTenure: 0,
+        }
     });
 
-    const onSubmit = async (data: UserFormValue) => {
+    const onSubmit = async (data: LoanFormValue) => {
         console.log(data)
     };
 
@@ -53,14 +60,14 @@ export function LoanForm({ className, ...props }: LoanFormProps) {
                 >
                     <FormField
                         control={form.control}
-                        name="amount"
+                        name="originatedAmount"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Loan Amount</FormLabel>
+                                <FormLabel>How much do you need?</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="number"
-                                        disabled={loading}
+                                        // disabled={loading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -78,7 +85,7 @@ export function LoanForm({ className, ...props }: LoanFormProps) {
                                 <FormControl>
                                     <Input
                                         type="number"
-                                        disabled={loading}
+                                        // disabled={loading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -92,11 +99,11 @@ export function LoanForm({ className, ...props }: LoanFormProps) {
                         name="loanTenure"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Loan Tenure</FormLabel>
+                                <FormLabel>How many months do you need?</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="number"
-                                        disabled={loading}
+                                        // disabled={loading}
                                         {...field}
                                     />
                                 </FormControl>
