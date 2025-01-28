@@ -47,7 +47,7 @@ interface Installment {
 interface LoanFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 const formSchema = z.object({
-    originatedAmount: z.preprocess((val: any) => parseFloat(val), z.number().positive('Amount must be positive')),
+    originatedAmount: z.preprocess((val) => parseFloat(val), z.number().positive('Amount must be positive')),
     interestRate: z.coerce.number()
         .min(1, { message: 'Please enter an interest of at least 1%.' })
         .max(20, { message: 'Please enter an interest of no more than 20%.' }), loanTermMonths: z.coerce.number().gt(0, { message: 'Please enter a value above 0.' }),

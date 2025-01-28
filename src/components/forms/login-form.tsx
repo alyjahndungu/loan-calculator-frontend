@@ -18,6 +18,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from 'zod';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+
+
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
     password: z.string({ message: 'Password is required' }),
