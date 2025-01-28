@@ -1,50 +1,50 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-import { LoanForm } from "@/components/hooks/loan-form"
-import {Results} from "@/components/hooks/results"
-import NoResults from "@/components/hooks/no-result"
-
+import { useEffect } from "react";
+import { LoanForm } from "@/components/forms/loan-form"
+import axios from "axios";
 export default function Home() {
 
-  const [result, setResult] = useState(false);
-  const [monthlyPayment, setMonthlyPayment] = useState("");
-  const [totalRepayment, setTotalRepayment] = useState("");
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/login`;
+
+  const sendRequest = async () => {
+      try {
+        const response = await axios.post(apiUrl, {
+          username: 'johndoe@example.com',
+          password: 'password'
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log('Response:', response.data);
+      } catch (error) {
+        console.error('Error sending request:', error);
+      }
+    };
+
+    useEffect(() => {
+      // Send the request immediately
+      sendRequest();
+      // Set up interval to send the request every 5 minutes (300000 milliseconds)
+      const intervalId = setInterval(sendRequest, 300000);
+      // Clear interval on component unmount
+      return () => clearInterval(intervalId);
+    }, []);
+
+
   return (
 
-<div >
-
-  <main className="flex items-center justify-center min-h-screen">
-  <div className="w-md p-6 border border-gray-200 rounded-sm shadow  dark:border-gray-700">
-        <h3 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">RESILIENT LOAN CALCULATOR</h3>
-
-        <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-        <LoanForm />
-
-
-          {result ? (
-            <Results
-              monthlyPayment={'1000'}
-              totalRepayment={'2000'}
-            />
-          ) : (
-           <NoResults />
-          )}
-        
-
-        </div>
-
-           
-
-
-    <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">Disclaimer: This is application is not mean't for production usage!</p>
-    
-</div>
-
+<div className="min-h-screen w-full flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+  <main className="flex items-center justify-center">
+      <div className="p-2 border border-gray-200 rounded-lg shadow-md bg-white dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex justify-center">
+      <h3 className="mb-4 text-md font-semibold tracking-tight text-gray-900 dark:text-white">RPS Loan Calculator</h3>
+      </div>
+          <LoanForm />
+          <p className="mt-4 p-2 text-xs text-gray-500 dark:text-gray-400">Disclaimer: This application is not meant for production purposes! @alyjahndungu</p>
+      </div>
   </main>
-
-
 </div>
 
 
