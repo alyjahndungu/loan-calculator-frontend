@@ -5,19 +5,19 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {Form,
+import {
+    Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-    FormMessage} from "@/components/ui/form";
-import {useState} from "react";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+    FormMessage
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from 'zod';
-import axios from "axios";
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
     password: z.string({ message: 'Password is required' }),
@@ -28,9 +28,6 @@ const formSchema = z.object({
 type UserFormValue = z.infer<typeof formSchema>;
 
 export function UserSignInForm({ className, ...props }: UserAuthFormProps) {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false)
-
-    const [loading, setLoading] = useState(false);
 
     const form = useForm<UserFormValue>({
         resolver: zodResolver(formSchema)
@@ -58,7 +55,6 @@ export function UserSignInForm({ className, ...props }: UserAuthFormProps) {
                                 <FormControl>
                                     <Input
                                         type="email"
-                                        disabled={loading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -76,7 +72,6 @@ export function UserSignInForm({ className, ...props }: UserAuthFormProps) {
                                 <FormControl>
                                     <Input
                                         type="password"
-                                        disabled={loading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -85,7 +80,7 @@ export function UserSignInForm({ className, ...props }: UserAuthFormProps) {
                         )}
                     />
 
-                    <Button disabled={loading} className="ml-auto w-full" type="submit">
+                    <Button className="ml-auto w-full" type="submit">
                         Sign In
                     </Button>
                 </form>

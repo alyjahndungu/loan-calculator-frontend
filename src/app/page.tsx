@@ -30,7 +30,7 @@ export default function Home() {
       const intervalId = setInterval(sendRequest, 300000);
       // Clear interval on component unmount
       return () => clearInterval(intervalId);
-    }, []);
+    }, [sendRequest]);
 
 
   return (
