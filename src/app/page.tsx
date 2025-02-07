@@ -34,19 +34,23 @@ export default function Home() {
 
 
   return (
-
-<div className="min-h-screen w-full flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-  <main className="flex items-center justify-center">
-      <div className="p-2 border border-gray-200 rounded-lg shadow-md bg-white dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex justify-center">
-      <h3 className="mb-4 text-md font-semibold tracking-tight text-gray-900 dark:text-white">RPS Loan Calculator</h3>
-      </div>
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <div className="p-6 md:p-8 border border-gray-200 rounded-xl shadow-lg bg-white dark:bg-gray-800 dark:border-gray-700">
+          <div className="text-center mb-6 bg-gray-50 rounded-lg dark:bg-gray-700/50">
+            <h3 className="text-xl md:text-2xl font-bold uppercase text-gray-900 dark:text-white">
+                Loan Calculator
+            </h3>
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              Calculate your loan details instantly
+            </p>
+          </div>
           <LoanForm />
-          <p className="mt-4 p-2 text-xs text-gray-500 dark:text-gray-400">Disclaimer: This application is not meant for production purposes! @alyjahndungu</p>
-      </div>
-  </main>
-</div>
-
-
+          <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-xs text-center text-gray-500 dark:text-gray-400">
+              Disclaimer: This application is not meant for production purposes! @alyjahndungu
+            </p>
+          </div>
+        </div>
+    </div>
   );
 }

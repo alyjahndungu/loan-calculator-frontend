@@ -20,6 +20,7 @@ import * as z from 'zod';
 import axios from "axios";
 import { Results } from "@/components/hooks/results"
 import NoResults from "@/components/hooks/no-result"
+import { Slider } from "@/components/ui/slider"
 
 interface LoanResponse {
     loan: {
@@ -74,9 +75,9 @@ export function LoanForm({ className, ...props }: LoanFormProps) {
     const form = useForm<LoanFormValue>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            originatedAmount: 200000,
-            interestRate: 7.5,
-            loanTermMonths: 6,
+            originatedAmount: 0,
+            interestRate: 0,
+            loanTermMonths: 0,
         }
     });
 
@@ -94,20 +95,37 @@ export function LoanForm({ className, ...props }: LoanFormProps) {
     };
 
     return (
-
-        <div className="flex flex-col lg:flex-row gap-4">
-            <div className={cn("flex flex-col gap-5 w-full", className)} {...props}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 w-full">
+            <div className={cn("flex flex-col gap-3 md:gap-5", className)} {...props}>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4 md:space-y-6">
                         <FormField
                             control={form.control}
                             name="originatedAmount"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Please specify the amount of loan you require?</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" {...field} />
-                                    </FormControl>
+                                    <FormLabel>Loan Amount Required</FormLabel>
+                                    <div className="space-y-3">
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                {...field}
+                                                onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                                            />
+                                        </FormControl>
+                                        <Slider
+                                            min={1000}
+                                            max={1000000}
+                                            step={1000}
+                                            value={[field.value]}
+                                            onValueChange={(vals) => field.onChange(vals[0])}
+                                            className="py-4"
+                                        />
+                                        <div className="flex justify-between text-xs text-muted-foreground">
+                                            <span>1,000</span>
+                                            <span>1,000,000</span>
+                                        </div>
+                                    </div>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -118,10 +136,28 @@ export function LoanForm({ className, ...props }: LoanFormProps) {
                             name="interestRate"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Please specify annual interest rate (%)</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" {...field} />
-                                    </FormControl>
+                                    <FormLabel>Annual Interest Rate (%)</FormLabel>
+                                    <div className="space-y-3">
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                {...field}
+                                                onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                                            />
+                                        </FormControl>
+                                        <Slider
+                                            min={1}
+                                            max={20}
+                                            step={0.1}
+                                            value={[field.value]}
+                                            onValueChange={(vals) => field.onChange(vals[0])}
+                                            className="py-4"
+                                        />
+                                        <div className="flex justify-between text-xs text-muted-foreground">
+                                            <span>1%</span>
+                                            <span>20%</span>
+                                        </div>
+                                    </div>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -132,48 +168,55 @@ export function LoanForm({ className, ...props }: LoanFormProps) {
                             name="loanTermMonths"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Please specify the loan tenure in months?</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" {...field} />
-                                    </FormControl>
+                                    <FormLabel>Loan Tenure (months)</FormLabel>
+                                    <div className="space-y-3">
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                {...field}
+                                                onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                                            />
+                                        </FormControl>
+                                        <Slider
+                                            min={1}
+                                            max={360}
+                                            step={1}
+                                            value={[field.value]}
+                                            onValueChange={(vals) => field.onChange(vals[0])}
+                                            className="py-4"
+                                        />
+                                        <div className="flex justify-between text-xs text-muted-foreground">
+                                            <span>1 month</span>
+                                            <span>360 months</span>
+                                        </div>
+                                    </div>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
-                        <Button className="ml-auto w-full"  size="lg" type="submit">
-                            <span className="font-semibold"> Estimate Loan </span>
+                        <Button className="w-full" size="lg" type="submit">
+                            <span className="font-semibold">Calculate Loan</span>
                         </Button>
                     </form>
                 </Form>
-
-                <div className="flex flex-col gap-5 w-full" {...props}>
-                    <div className="w-full">
-                        {result ? (
-                            <Results
-                                outstandingLoanAmount={result.loan.outstandingLoanAmount}
-                                totalInterest={result.loan.totalInterest}
-                                totalInstallements={result.loan.installments.length}
-                                loanDueDate={result.loan.endDate}
-                                totalMonthlyPaymentAmount={result.loan.installments[0].outstandingAmount}
-                            />
-                        ) : (
-                            <NoResults />
-                        )}
-                    </div>
-                </div>
-
-                <div className="relative">
-                    <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t" />
-                    </div>
-                </div>
             </div>
 
-
-
-
+            <div className="flex flex-col gap-3 md:gap-5 w-full">
+                <div className="w-full h-full flex items-start">
+                    {result ? (
+                        <Results
+                            outstandingLoanAmount={result.loan.outstandingLoanAmount}
+                            totalInterest={result.loan.totalInterest}
+                            totalInstallements={result.loan.installments.length}
+                            loanDueDate={result.loan.endDate}
+                            totalMonthlyPaymentAmount={result.loan.installments[0].outstandingAmount}
+                        />
+                    ) : (
+                        <NoResults />
+                    )}
+                </div>
+            </div>
         </div>
-
     )
 }
